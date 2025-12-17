@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Danin Sadzak | Kontakt</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--Preuzeto sa:
+        https://devicon.dev/, kao i: https://fontawesome.com-->
+        <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul class="navigacija">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="projekti.html">Projekti</a></li>
+                    <li><a href="/blog/blog.html">Blog</a></li>
+                    <li><a href="o_meni.html">O Meni</a></li>
+                    <li><a href="kontakt.html">Kontakt</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="tekst">
+            <h1>Pošaljite mi poruku!</h1>
+            <p>Ako imate neko pitanje što se tiče programiranja, matematike, ili navikama o učenju i radu, slobodno mi se javite. Volim pomagati 
+                svojim čitaocima :) Također, ako ste našli neki članak, video, knjigu, ili nešto drugo što mislite da bi mi bilo interesantno, 
+                šaljite! Tako dobijam inspiracije za više materijala za blog objave.
+            </p><br>
+            <form class="kontakt-forma">
+                <div class="form-grupa">
+                    <label for="ime">Ime i prezime:</label>
+                    <input type="text" id="ime" name="ime" placeholder="Vaše ime i prezime">
+                </div>
+                    
+                <div class="form-grupa">
+                    <label for="email_adresa">Email adresa:</label>
+                    <input type="email" id="email_adresa" name="email_adresa" placeholder="Vaša email adresa">
+                </div>
+
+                <div class="form-grupa">
+                    <label for="vrsta_poruke">Vrsta poruke:</label>
+                    <select id="vrsta_poruke" name="vrsta_poruke">
+                        <option value="pitanje_o_programiranju">Pitanje o programiranju</option>
+                        <option value="pitanje_o_matematici">Pitanje o matematici</option>
+                        <option value="pitanje_o_produktivnosti">Pitanje o produktivnosti</option>
+                        <option value="zanimljivi_mediji">Zanimljivi mediji</option>
+                    </select>
+                </div>
+
+                <div class="form-grupa">
+                    <label for="poruka">Poruka:</label>
+                    <textarea id="poruka" name="poruka" rows="10" placeholder="Vaša poruka ide ovdje :)"></textarea>
+                </div>
+
+                <button type="submit" class="dugme-submit">Pošaljite poruku!</button>
+            </form>
+        </section>
+
+        <footer>
+            <h6>© 2035 Danin Sadžak. Sva prava pridržana.</h6>
+            <a href="https://github.com/d4nin" target="_blank"><i class="fa-brands fa-square-github"></i></a>
+            <a href="https://x.com/qwertyuad23" target="_blank"><i class="fa-brands fa-square-twitter"></i></a>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Danin Sadzak | Projekti</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--Preuzeto sa:
+        https://devicon.dev/, kao i: https://fontawesome.com-->
+        <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul class="navigacija">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="projekti.html">Projekti</a></li>
+                    <li><a href="/blog/blog.html">Blog</a></li>
+                    <li><a href="o_meni.html">O Meni</a></li>
+                    <li><a href="kontakt.html">Kontakt</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="tekst">
+            <h1>Projekti na kojima sam radio</h1>
+            <h2>MicroShell</h2>
+            <div class="kontejner">
+                <img src="/slike/microshell.png" width="550px" height="300px" alt="Headshot slika mene.">
+                <p>MicroShell je moj vlastiti mini shell implementiran od nule, inspirisan UNIX školjkama poput bash i dash. Cilj projekta je 
+                    bio razumjeti kako operativni sistemi upravljaju procesima i kako se komadni interpreteri ponašaju na najnižem nivou. <br>
+                    Implementirao sam kompletan parser korisničkog inputa, podršku za pokretanje binarnih programa putem fork() i execve(), 
+                    osnovnu mainipulaciju procesima (čekanje, child status, signali), pipe-ove (|) i redirekciju (>, <) i minimalnu detekciju 
+                    grešaka bez korištenja dodatnih biblioteka.<br> Najveći izazov mi je bio sanitizirati input i pametno upravljati file descriptor-iama, 
+                    naročito tokom lančanih pipe-ova. Projekt me je naučio kako školjke zaista funkcionišu i poslužio mi je kao uvod u razvoj jezgra i interpretera. 
+                </p>
+            </div> <br>
+            <h2>In Foco</h2>
+            <div class="kontejner">
+                <p>"U fokusu" kad se prevede sa latinskog jezika, ovo je moj najveći "game dev" projekat. Služi više kao alat za produktivnost, gdje 
+                    je omogućeno korisnicima da pišu to-do liste, kao i unose u dnevnik. Također, korisnici mogu da koriste Pomodoro tajmer, kao i 
+                    obični countdown i stopwatch timer. U igri je omogućeno slušanje lo-fi muzike, kao i smeđeg, bijelog, i rozog zvuka za fokus. <br>
+                    Projekat je rađen u game engine-u Unity i korišten je programski jezik C#. Izgradnja prve verzije igre je trajala oko dva mjeseca, 
+                    i projekat me je uveo u svijet game development-a i naučio sam dosta o filozofiji stvaranja video igara. <br>
+                    <a href="https://store.steampowered.com/app/2113850/Spirit_City_Lofi_Sessions/" target="_blank">Igra se može nabaviti na 
+                        platformi Steam</a>, a u planu je i podrška na mobilnim uređajima i konzolama. 
+                </p>
+                <img src="/slike/in_foco.png" width="500px" height="300px" alt="Headshot slika mene.">
+            </div> <br>
+            <h2>RISC-V Emulator</h2>
+            <div class="kontejner">
+                <img src="/slike/risc_v_emulator.png" width="450px" height="500px" alt="Headshot slika mene.">
+                <p>RISC-V Emulator implementira dio RV32I instrukcijskog seta i simulira rad jednostavnog procesora.<br>
+                    Emulator uključuje 32 registra opšte namjene, program counter i osnovni ALU, podršku za aritmetičke i load/store instrukcije, 
+                    jednostavni segment memorije i loader za binarne fajlove. <br>
+                    Največi fokus je bio na dekodiranju instrukcija (bitmaskiranje i ekstrakcija polja), simulaciji pipeline koraka i preciznom 
+                    repliciranju integer aritmetike i branching logike.<br>
+                    Ovaj projekat mi je jedna od najbitnijih prekretnica jer me je naučio CPU zapravo izvršava instrukcije, ciklus po ciklus.
+                </p>
+            </div> <br>
+            <h2>Mathematical Open Source Library (MOSL)</h2>
+            <div class="kontejner">
+                <p>MOSL je dugogodišnji open-source projekat čiji je cilj da objedini i standardizuje matematičke zbirke zadataka iz različitih 
+                    oblasti, od osnovnih algebarskih koncepata do napredne realne i funkcionalne analize.<br>
+                    Ideja projekta je nastala iz potrebe za jedinstvenim mjestom gdje studenti, profesori, i entuzijasti mogu pronaći 
+                    kompletno riješenje zbirke zadataka, jasno strukturisane PDF dokumente (po autorima, temama i nivoima težine), dodatne napomene, 
+                    kratke teorijske uvode i komentare uz zadatke i alternativna rješenja, gdje god su metodološki interesantna.<br>
+                    PDF-ovi su podijeljeni po oblastima (kalkulus, linearna algebra, diskretna matematika, vjerovatnoća i statiskita, itd.) a svaka oblast 
+                    sadrži nekoliko zbirki iz različitih autora na bosanskom, hrvatskom, srpskom, i engleskom jeziku.
+                </p>
+                <img src="/slike/mosl.jpg" width="500px" height="300px" alt="Headshot slika mene.">
+            </div> <br>
+            <h2>Wile E. Tutor</h2>
+            <div class="kontejner">
+                <img src="/slike/wile_e_tutor.png" width="450px" height="500px" alt="Headshot slika mene.">
+                <p>Wile E. Tutor je kanal na sajtu YouTube, čiji je cilj da edukuje studente i interesovane o matematici. Prvo je bio kanal korišten za 
+                    objašnavanje oblasti kompjuterskih sistema, prije nego što je sadržaj kanala bio promjenjen za kalkulus. <br>
+                    Danas, Wile. E. Tutor obuhvata razne oblasti matematike, od elementarne, algebre, diskretne, itd. Najpoznatiji serijal jeste "Proofs 
+                    for the unimformed", lista videozapisa čija tematika obuhvata teoriju dokazivanja i primjene dokaza na ostale oblasti iz matematike.
+                </p>
+            </div> <br>
+        </section>
+
+        <footer>
+            <h6>© 2035 Danin Sadžak. Sva prava pridržana.</h6>
+            <a href="https://github.com/d4nin" target="_blank"><i class="fa-brands fa-square-github"></i></a>
+            <a href="https://x.com/qwertyuad23" target="_blank"><i class="fa-brands fa-square-twitter"></i></a>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Prelazak sa C na Rust i kako sam konačno prestao sa segfaultam svaka dva dana</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--Preuzeto sa:
+        https://devicon.dev/, kao i: https://fontawesome.com-->
+        <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        
+        <link rel="stylesheet" type="text/css" href="/style.css">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul class="navigacija">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/projekti.html">Projekti</a></li>
+                    <li><a href="/blog/blog.html">Blog</a></li>
+                    <li><a href="/o_meni.html">O Meni</a></li>
+                    <li><a href="/kontakt.html">Kontakt</a></li>
+                </ul>
+            </nav>
+        </header>
+        <section class="tekst">
+            <h1>Prelazak sa C na Rust i kako sam konačno prestao sa segfaultam svaka dva dana</h1>
+            <p>
+                Ako ste ikada radili ozbiljnije projekte u programskom jeziku C, sigurno znate ovaj osjećaj.
+                Napisali ste kod i želi te ga testirati. Kompajlirate program. Program se pokrene. Program eksplodira. I dobijete poruku koji svaki 
+                C programer voli da vidi:<br><br>
+                <i>Segmentation fault (core dumped)</i><br><br>
+                I onda slijedi ritual gdb-a, printf debugging-a, kao i sumnju u sopstvenu inteligenciju i razmišljanje da li je možda keramika 
+                ipak bolji izbor karijere.
+            </p>
+            <p>
+                Ovaj članak nije ponižavanje C-a. Nipošto. Ustvari, C mi je dao razumjevanje računara koji nijedan drugi jezik nije. Ali je i bio razlog 
+                zašto sam se, nakon nekoliko godina rada u ovom jeziku, ozbiljno okrenuo na Rust. I volio bih da ovim člankom ispričam ovaj prelazak.
+            </p>
+            <p>
+                Ponovo, nemoj te me shvatiti pogrešno, ja C i dalje obožavam. Ali... ručno upravljanje memorijom je moćno, ali NEMILOSRDNO. Jedan pogrešan free, 
+                kao i jedan zaboravljen malloc; ode cijeli program zbog undefined behaviour. Concurrency u C-u zahtijeva ogromnu disciplinu, i, većina bug-ova 
+                nisu "logičke greške", nego memorijske. To sam mogao podnijeti, ali zadnjih godinu dana, ove osobine su mi počele smetati, pogotovo kad sam 
+                počeo pisati dosta zahtjevnog low-level koda za razne projekte, lične i više profesionalnije. Jednostavno sam htio jezik koji daje kontrolu blizu 
+                hardvera, koji ne bježi od sistemskog programiranja, ali me također aktivno sprječava da napravim katastrofu. 
+            </p>
+            <p>
+                Odgovor je bio očit, ali sam se prvo malo ispitao sa kolegama. Na umu mi je prvo bio Golang, jezik koji je blizak C-u (također i jezik 
+                u kojem sam imao ranijeg iskustva), ali nije imao suviše dobar garbage colletor. Također, nije uopšte bio dobar za moje potrebe, zato 
+                što se više koristi u backend servisima nego u sistemskom programiranju. 
+                <br>
+                Tu je bilo raznih ideja, ali jedan se jezik vrtio u ovoj priči kad sam se raspitivao: Rust. 
+            </p>
+            <p>
+                Da budem fer, C nije uopšte loš jezik. C je iskren jezik. Na primjer, pogledajte sljedeći kod:
+            </p>
+            <img src="/slike/unos_2_slika_1.png" width="400px" height="300px">
+            <br><br> <p>
+                Ukratko, ovaj program nije dobar. Prvo inicijalizira pokazivač na NULL. A pokazivač sa vrijednošću NULL ne pokazuje ni na jednu 
+                važeću memorijsku lokaciju.<br>
+                Onda pokušavamo pristupiti memorijskog lokaciji i dodijeliti joj vrijednost 42. Sada, pošto p ima vrijednost 
+                NULL, program pokušava pisati u memoriju na nevažećoj adresi. Sada, moderni programski jezici na ovakvu grešku uopšte nebi dali 
+                programeru da kompajlira kod, ali C dozvoljava, i nedaje nikakav error na ovo. Jednostavno nakon kompajliranja, program se sruši.
+                Kao što je jedan moj dobar prijatelj rekao: "Problem nije u C-u, nego je problem što C vjeruje programeru". Ali, Rust ne vjeruje nikome.     
+            </p>
+            <p>
+                Kad sam se prvi put susreo sa Rust kodom, nešto što me je odmah uhvatilo moju pažnju je bio ovaj sljedeći kod: 
+            </p>
+            <img src="/slike/unos_2_slika_2.png" width="600px" height="300px">
+            <br><br> <p>
+                Rust neće dati da pokrenete ovaj program, ustvari samo će reći<br><br>
+                <i>Value borrowed after move</i><br><br>
+                Ovaj kod u C-u bi bio običan pokazivač, ali u Rust-u, to je vlasništvo. Rust ima nešto što se zove "ownership model". Svaka vrijednost 
+                ima samo jednog vlasnika, i kad se vlasništvo prebaci, stari vlasnik više ne postoji. Što znači da nema double free, niti use-after-free. 
+            </p>
+            <p>
+                Na početku, ovo me je strašno nerviralo, i shvatio sam koliko slobode imam kad pišem C kod. U C-u mogu testirati kod, vidjeti gdje je problem, 
+                pokušati riješiti ga, i ove postupke ponavljati sve dok se program može raditi normalno. Iskreno, htio sam se brzo vratiti na C zbog te slobode. 
+                Ali, kad je više vremena prošlo, i što sam više koda pisao, shvatio sam koliko je intiutivan jezik. Rust me je natjerao da razmišljam unaprijed, 
+                umjesto da debug-ujem poslije.  
+            </p>
+            <img src="/slike/unos_2_slika_3.png" width="550px" height="300px">
+            <br><br> <p>
+                Ovaj kod u C-u se kompajlira. Ovaj kod u C-u je također katastrofa.<br>
+                U funkciji varijabla x je lokalna varijabla, što znači da se ona stvara na stack-u samo za vrijeme izvršavanja te funkcije. A mi 
+                vraćamo adresu te lokalne varijable. Ova funkcija ustvari dovodi do nedefinsanog ponašanja, jer čim funkcija završi i vrati vrijednost, 
+                memorija koju je zauzimala lokalna varijabla se odmah oslobađa i postaje dostupna za ponovno korištenje drugim funkcijama. To jest, varijabla 
+                prestaje postojati.<br>
+                Posljedica ovoga jeste da je ovaj pokazivač koji je vraćen sada viseći pokazivač (engl. dangling pointer) jer pokazuje na memorijsku lokaciju 
+                koja je oslobođena i koja više ne sadrži varijablu x. Ako kasnije u programu pokušamo deferencirati taj pokazivaš (*p = 42; npr.), pokušavamo 
+                čitati, ili pisati, u memoriju koja je možda već zauzeta nečim drugim, što rezultira nedefiniram ponašanjem i vjerovatnim rušenjem programa.
+                <br><br>Ovako bi izgledao ekvivalent u Rust-u:
+            </p>
+            <img src="/slike/unos_2_slika_4.png" width="700px" height="300px">
+            <br><br> <p>
+                Rust se odmah pobuni, i odmah će reći "ne možeš vratiti referencu na nešto što će nestati.", i program ne postoji dok ne bude ispravan. 
+            </p>
+            <p>
+                Hajmo sada preći na borrow checker, također jedan od poznatih osobina Rust-a. Iskreno, prvih nekoliko dana nisam bio ljubitelj borrow 
+                checker-a. Stalno su mi se izbacivale poruke tipa: <br><br>
+                <i>"Cannot borrow x as mutable because it is also borrwed as immutable</i><br><br>
+                Ali, kao i ownership, što sam više Rust koda pisao, ovaj neprijatelj mi je polako postao mentor. Borrow checker nije tu vas kazni, 
+                on je tu da pokaže gdje je dizajn loš. (što iskreno govori koliko je inače moj kod nestabilan...) <br>
+                Štaviše, kad Rust dozvoli da se program pokrene, to znači da je on memory siguran, kao i thread siguran (pa, ne svaki put, ali 
+                u ogromnom broju slučajeva, jeste). Program je također bez runtime race-ova, i najvažnije, bez runtime overhead-a! :)
+            </p>
+            <p>
+                Samo još nešto da spomenem, osim sigurnog koda, Rust me je i osvojio izvan jezika. Rust ima Cargo i svoj intuitivni ekosistem. Cargo 
+                je Rust-ov package manager, zamislite nešto kao node u Javascript-u i pip u Python-u. <br>
+                Rust ima cargo build, test, fmt, clippy, i tako dalje. Sve je standardizovano i ugrađeno u jezik. Nema Makefile, a POGOTOVO CMake pakla. 
+                Najiskrenije, Crates.io je jedan od najčišćih ekosistema koje sam koristio. 
+            </p>
+            <p>
+                Da objedinim ovaj članak; Rust nije lagan. Ako dolazite iz C-a i C++-a, imat ćete osjećaj kao da vam je oduzeta sva sloboda, ali 
+                nakon dužeg korištenja jezika, polako će te shvatiti da vam je oduzeta sloboda da se pogriješi. Rust u stvari ne uklanja kompleksnost, on 
+                premješta iz runtime-a u compile time, što mislim da je cijela poenta jezika. <br>
+                Nakon godinu dana pisanja Rust koda, kao i pravljenja malo većih ličnih projekata u Rust-u, koristio bih ga za dugoročne projekte sa 
+                sigurnosno osjetljivim kodom. Također, trebao bih spomenuti da sam uspio nagovoriti šefa da koristimo Rust u nekim projektima, i mogu reći 
+                da je sjajan za nove sistemske alate i network servise.<br>
+                Ali, i dalje ću voljeti C. Iskreno ne vidim poentu pisanja embedded sistema bez njega. Rust je također dobar, mada nisam toliko radio embedded 
+                projekata sa njim, ali mislim da C i dalje ima veliku prednost zbog kontrole. Smatram da se mora koristiti na mjestima gdje je apsolutna kontrola 
+                potrebna. I naravno, kao programer za operativni sistem, i dalje pobjeđuje u pisanju kernel i driver koda.<br><br>
+                Ukratko, C me je naučio kako računar stvarno radi, a Rust kako da to znanje koristim bez da se samosabotiram. Iskreno, ne biram strane. 
+                Biram alat. I iskreno, baš je lijepo raditi sistemski kod da se ne bojim svakog pokazivača :)
+            </p>
+            <a href="/blog/blog.html" class="natrag"><h6><-Natrag</h6></a>
+        </section>
+        <footer>
+            <h6>© 2035 Danin Sadžak. Sva prava pridržana.</h6>
+            <a href="https://github.com/d4nin" target="_blank"><i class="fa-brands fa-square-github"></i></a>
+            <a href="https://x.com/qwertyuad23" target="_blank"><i class="fa-brands fa-square-twitter"></i></a>
+        </footer>
+    </body>
+</html>

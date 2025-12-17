@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Funkcija i rad kernela</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--Preuzeto sa:
+        https://devicon.dev/, kao i: https://fontawesome.com-->
+        <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        
+        <link rel="stylesheet" type="text/css" href="/style.css">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul class="navigacija">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/projekti.html">Projekti</a></li>
+                    <li><a href="/blog/blog.html">Blog</a></li>
+                    <li><a href="/o_meni.html">O Meni</a></li>
+                    <li><a href="/kontakt.html">Kontakt</a></li>
+                </ul>
+            </nav>
+        </header>
+        <section class="tekst">
+            <h1>Funkcija i rad kernela</h1>
+            <p>
+                Sjećam se kad sam htio, po prvi put, napisati program za rad veoma jednostavnog kernela. Cilj mi je bio da se uspije upaliti 
+                u virtuelnoj mašini, i da ispiše neki tekst (naravno, kao svaki programer, placeholder tekst mi je bio "Hello, World!") <br>
+                Razlog zbog ovog projekta jeste bio da naučim kako kernel radi. Tada sam počeo pisati malo ozbiljnije C projekte, i htio sam 
+                da proširim svoje znanje sistemskog programiranja. Mislio sam da će projekat biti "ok" težine, ne pretežak, ali ne i prelagan. 
+                Negdje između. Međutim, dugogodišnji čitaoci ovog blog-a znaju da, kako sam pronalazio više i više greški, projekat je postao 
+                sve teži i teži za raditi. <br>
+                Za neupućene, pisanje projekta je išlo fantastično, i kad sam ušao u VM i vidio "Hello, World!" bio sam veoma sretan, i mislio da sam 
+                većinom gotov sa projektom... dok se nije skoro ODMAH pojavila fatalna greška zbog kojeg sam trebao restartovati VM pet puta, u deset 
+                minuta, jer sam shvatio da sam napravio beskonačnu petlju u ring 0.<br>
+                Trebalo mi je skoro dvije sedmice da tu grešku ispravim, jer su se pojavljivale manje, ali dalje štetne, greške. Tada sam naučio 
+                jednu važnu lekciju: kernel je absolutno moćan. Također je i absolutno nemilosrdan. <br><br>
+                Lično mislim da danas znam više o kernelu. Uspio sam da na tom minijaturnom kernelu napravim, zajedno sa prijateljima koji su bili 
+                zainteresirani da rade na projektu, mali desktop sa minimalnim funkcionalnostima. Čak smo uspjeti da implementujemo moj MicroShell 
+                kao dio kernela :) <br>
+                Tako da, danas bi htio malo se pozabaviti kernelom. Konkretno, volio bi da ukratko kažem šta je, zašto postoji, i kako radi. Moram 
+                da spomenem da ovo <i>nije priručnik k ako napisati kernel, niti potpun guide kako funkcioniše.</i> Ja ću se samo dotači na osnove 
+                kernela. Imaju cijele firme koje se bave dokumentovanjem ovog materijala kojeg ću sada ispričati, i vjerujem da nisam još do tog 
+                nivoa da sam obučavam nekoga o kernelu.  
+            </p>
+            <p>
+                Šta je zapravo kernel? Mnogi imaju neki abstraktan zamisao kernela, ali najjednostavije rečeno, kernel je srce operativnog sistema. 
+                On služi kao most između hardvera i programa koje svakodnevno koristimo. Kernel ima dosta uloga, ali najvažnije su da on 
+                raspoređuje CPU vremena između procesa, upravlja memorijom, komunicira sa hardverom (kad nešto kliknete na tastaturi, ili ubacite 
+                disketu, ili neku drugu vrste hardvera, kernel je zaslužan da taj input uradi nešto na računaru). I za kraj, on obrađuje low-level 
+                sistemske pozive, od tih, glavni su read, write, i fork. 
+            </p>
+            <p>
+                Jeste li znali da postoji više vrsta kernela? Kad sam počeo rad na već navedenom kernel projektu na početku članka, nisam ni ja bio 
+                upućen u tu činjenicu. Mada, nije više "vrsta" kernela, nego pristup dizajnu kernela.<br>
+                Prvi pristup se naziva "monolitni kernel". Kernel je u jednom ogromnom binarnom fajlu. Ovaj pristup je najbrži, ali ujedno i 
+                najkompleksniji. Primjer monolitnog kernela je zapravo Linux! Iskreno, iako sada imam više iskustva sa radom kernela, i dalje me je 
+                strah koristiti ovaj pristup. Možda jednog dana kad sam kompetentan sa Rust-om. <br>
+                Drugi pristup se naziva "mikrokernel". Kao što kaže samo ime, ovaj kernel je minimalan. Većina koda se izvršava van kernela, 
+                što se zapravo naziva "user space". Ovaj pristup je mnogo sigurniji, ali zato što se oslanjamo više na user space, također je i 
+                sporiji. Primjer mikrokernela je Minix, a također moram da spomenem da je moj mali kernel također koristio pristup mikrokernela :) <br>
+                Za kraj, također postoji i hibridni kernel, koji, po imenu, koristi principe monolitnog i mikrokernela. Nije tako brz kao monolitni, 
+                ali nije toliko ni spor kao mikrokernel. Ovaj pristup se rijetko koristi, i najznačnajniji primjer hibridnog kernela je Windows NT. <br>
+                Iako ove na prvu čini da razlike nisu toliko velike, odabir pristupa za ozbiljniji kernel je zapravo VEOMA bitan, jer svaki od navedenih 
+                utiču direktno na performanse, sigurnost, i stabilnost sistema koji pravite. 
+            </p>
+            <p>
+                Sada, hajmo na suštinu ovog članka, <i>kako kernel zapravo radi.</i> <br>
+                Što se tiče memorije, kernel upravlja virtualnom memorijom pomoću nečega što se zove paging. Ukratko, paging je proces pomijeranja 
+                dijelova programa (što se zovu stranice - pages), iz nekog prostora u glavnu memoriju (RAM memoriju)<br>
+                Na starijim kernelima, ovaj proces je bio vršen korištenem "segmentacije" (segmentation), gdje se neki proces podijelu u veoma sitne, 
+                male dijelove koje se zovu segmenti. Ali ovaj proces je veoma složen za upotrebu, i postoje različita ograničanja što se tiče upotrebe
+                ovog pristupa, tako da moderniji kerneli ga uopšte i ne koriste. <br>
+                Kernel odlučuje koji proces dobija CPU, i koliko dugo. Također, on odlučuje kada se radi context switch. Uglavnom, context switching je 
+                operacija gdje CPU prestaje da izvršava jedan proces, spašavanje trenutno stanje procesa, i učitava stanje drugog procesa, tako da 
+                više procesa mogu efektivno dijeliti CPU.<br>
+            </p>
+            <p>
+                Nadam da ste ovim kratkim člankom naučili osnove kernela. On je meni fascinantat zato što je brutalan, ali pošten. I, iskreno, malo 
+                i zastrašujuć.<br>
+                Sistemsko programiranje je haos. I upravo zato ga neki od nas obožavaju. Najvjerovatnije ću kasnije u budućnosti
+                pisati malo konkretnije o kernelu, imam planove za web tutorijal o pravljenju mini kernela :) 
+            </p>
+            <a href="/blog/blog.html" class="natrag"><h6><-Natrag</h6></a>
+        </section>
+        <footer>
+            <h6>© 2035 Danin Sadžak. Sva prava pridržana.</h6>
+            <a href="https://github.com/d4nin" target="_blank"><i class="fa-brands fa-square-github"></i></a>
+            <a href="https://x.com/qwertyuad23" target="_blank"><i class="fa-brands fa-square-twitter"></i></a>
+        </footer>
+    </body>
+</html>

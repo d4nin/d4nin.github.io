@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Zašto CPU radi ono što radi</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--Preuzeto sa:
+        https://devicon.dev/, kao i: https://fontawesome.com-->
+        <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        
+        <link rel="stylesheet" type="text/css" href="/style.css">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul class="navigacija">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/projekti.html">Projekti</a></li>
+                    <li><a href="/blog/blog.html">Blog</a></li>
+                    <li><a href="/o_meni.html">O Meni</a></li>
+                    <li><a href="/kontakt.html">Kontakt</a></li>
+                </ul>
+            </nav>
+        </header>
+        <section class="tekst">
+            <h1>Zašto CPU radi ono što radi</h1>
+            <p>
+                Dugo sam mislio da je rad CPU-a jedan veoma jednostavan proces. Čita instrukcije, izvrši ih, pa onda ide na sljedeću. Ali, 
+                kad sam se malo udubio i pročitao materijala, ne samo da moja pretpostavka nije tačna, nego sam ofulao njegov rad, skroz. Moderni 
+                procesori ne rade ono što napišete, nego ono što misle da si htio da napišeš. I to što brže mogu. <br>
+                I uglavnom uspiju. Ali... kad ne uspiju? Dobijete bug koji se ne može reproducirati. 
+            </p>
+            <p>
+                Pošto pričamo o CPU-u, moram spomenuti jedan od najvećih enigmi što se tiče njegovog rada, a to je cache. CPU-ov najbolji prijatelj, 
+                a ujedno i najveći neprijatelj. <br>
+                Da malo pojasnim, moram vam prvo piramidu memorijske hijearhije:
+            </p>
+            <img src="/slike/unos_5_slika_1.png" width="550px" height="420">
+            <p>
+                Ovdje vidimo da je CPU (kao i njegovi registri) najbrži. Zato što kod CPU-a (tačnije, registara) nema kašnjenja. Radnja na CPU 
+                se izvršava odjednom (tačnije, kaže se da traje jedan "takt"), i zbog toga je najbrži.<br>
+                RAM je dosta sporiji od CPU-a. Kad se pogleda koliko spor, to su strašno minijaturne razlike (kasni za oko 100 nanosekundi), ali je 
+                i dalje razlika. A, RAM memorija je dosta bitna za rad CPU-a.<br>
+                Između RAM-a i CPU-a se nalazi Cache. Sada, Cache je što bih ja rekao "kompromis". Nema samo jedan cache, nego tri. L1, L2, L3. 
+                Uglavnom, L1 je manji i ekstremno brz (oko 1-2 nanosekunde kašnjenja), L2 je veći, malo sporiji (kasni 3-5 nanosekundi), i na kraju, 
+                L3 je podijeljen između više jezgri, i on je još sporiji (i to drastično kad se gleda uporedo sa L1 i L2 cache-om, cijelih 15 nanosekundi!)<br>
+                Sada, podaci se čitaju u cache line-ovima, obično 64 bajta. I, ako promašite cache (što se zove cache miss), cijena je brutalna, i to je 
+                kašnjenje od 50-200 nanosekundi. Ponovo, to su veoma male vremenske jedinice za nas, ali u svijetu CPU-a, to je vječnost. 
+            </p>
+            <p>
+                To nije ni najgora stvar. Najgori mogući scenario koji se može desiti jeste false sharing. To je kad dvije niti koriste različite varijable 
+                koje se nalaze u istoj cache liniji. Kod vam može izgledati ispravno, i hoće, ali će performanse biti katastrofa. A debug-ovanje postaje pakao.<br>
+                U ovom slučaju CPU čak pokušava da bude i pametan i prefetch-uje podatke unaprijed. Nekad pogodi, nekad ne. 
+            </p>
+            <p>
+                Jeste li znali da CPU ne mora izvršavati instrukcije redom? Ako vidi da može preskočiti jednu i izvršiti drugu, to će zapravo i uraditi. <br>
+                To je ustvari jedva veoma dobra osobina. CPU maksimalno koristi svoj pipeline, što dovodi do manje čekanja i više performansi. Ali to je također i 
+                jedna veoma opasna osobina. Jer vaš kod logički ima redoslijed, ali CPU taj redoslijed ne poštuje uvijek. U single-thread kodu to se obično i 
+                ne primjeti. Ali u multi-thread kodu, dobijete bug koji se pojavi jednom u milion izvršavanja.
+            </p>
+            <p>
+                Kad sam na početku članka rekao da CPU pogađa ono što napišete, nisam se zezao. Kad pišete kod, vi imate jednu logičku strukturu. 
+                Uzmimo kao primjer grananje. Kad napišete neku if/else naredbu, imate u glavi logičke postupke. Ako to, izvršit će se to. Ako ne, onda ovo. 
+                Ali CPU to pogađa. Svaki if/else je pitanje šta će se desiti dalje. Ako pogodi, sve je super, i možemo slaviti. Ako se desi da CPU fuli nešto, 
+                onda ide belaj. Desi se pipeline flush, i performanse znaju da padnu i do 20x. Zato neki kod koji "logički izgleda isto" može biti drastično 
+                sporiji. Nije problem u programskom jeziku nego u tome što ste prevarili prediktor. 
+            </p>
+            <p>
+                Nisu svi procesori isti. Postoji x86, što je relativno jak model memorije, kao i ARM, što je slabiji model memorije. To znači da CPU i kompajler 
+                mogu rearanžirati instrukcije, i da redoslijed u kodu nije isto kao što je redoslijed izvršavanja. Zato postoje memorijske ograde (engl. memory barriers), 
+                tako da tokom pisanja koda, ako ne znate zašto koristite te ograde, onda vjerovatno ih pogrešno i koristite. 
+            </p>
+            <p>
+                Moderni CPU nije "računar", to je životinja koja pokušava predvidjeti vaše ponašanje. Kad razumijete cache, ordering, predikciju i izvršavanje, 
+                postajete mnogo bolji sistemski programer. <br>
+                A kad ih ignorišete... Pa, CPU će vas kazniti, tiho. I bez upozorenja. 
+            </p>
+            <a href="/blog/blog.html" class="natrag"><h6><-Natrag</h6></a>
+        </section>
+        <footer>
+            <h6>© 2035 Danin Sadžak. Sva prava pridržana.</h6>
+            <a href="https://github.com/d4nin" target="_blank"><i class="fa-brands fa-square-github"></i></a>
+            <a href="https://x.com/qwertyuad23" target="_blank"><i class="fa-brands fa-square-twitter"></i></a>
+        </footer>
+    </body>
+</html>

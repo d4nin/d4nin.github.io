@@ -1,0 +1,269 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #0d0d0d;
+    color: #f2f2f2;
+    line-height: 1.6;
+}
+
+header {
+    padding: 20px 40px;
+    background: #4f3b78;
+}
+
+.navigacija {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navigacija a {
+    color: #cccccc; 
+    font-weight: 500;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.navigacija a:hover {
+    color: white;
+}
+
+.uvod {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.uvod-header {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.uvod-subtext {
+    font-weight: 300;
+    color: #aaaaaa;
+    margin-bottom: 20px;
+}
+
+.uvod-button {
+    cursor: pointer;
+    transition: 0.3s;
+    color: #f2f2f2;
+    background-color: #4f3b78;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.uvod-button a { 
+    color: white; 
+    text-decoration: none;
+}
+
+.kratak-opis { 
+    text-align: center;
+    font-size: 20px;
+    margin: 50px auto;
+    color: #aaaaaa;
+    max-width: 1000px;
+    margin-top: 10px;
+}
+
+.znanja {
+    text-align: center;
+    margin-bottom: 90px;
+}
+
+.iskustva {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.ikone {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    font-size: 50px;
+    color: #aaaaaa;
+}
+
+.ikone i { 
+    transition: 0.3s;
+}
+
+.ikone i:hover {
+    color: white; 
+    transition: scale(2.0);
+}
+
+.blog { 
+    text-align: center;
+}
+
+.blog a {
+    text-decoration: none;
+    color: white;
+}
+
+.blog-preview { 
+    text-align: justify;
+    background-color: #111111;
+    border-radius: 15px;
+    border: 2px solid #222222;
+    max-width: 500px;
+    padding: 20px;
+    margin: 20px auto;
+}
+
+.blog-preview h4 {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.blog-preview p { 
+    font-size: 15px;
+}
+
+.blog-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    color: #4f3b78; 
+}
+
+
+footer {
+    text-align: center;
+    margin-top: 100px;
+    background: #4f3b78;
+}
+
+footer i {
+    font-size: 25px;
+}
+
+footer a { 
+    text-decoration: none;
+    color: white;
+}
+
+.tekst {
+    text-align: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+.tekst h1 {
+    font-size: 30px;
+    margin-bottom: 50px;
+}
+
+.tekst h2 {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.tekst p {
+    text-align: justify;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.tekst img {
+    height: auto;
+    border: 5px solid #e3a857; 
+    border-radius: 20px;  
+}
+
+
+.natrag {
+    text-align: left;
+    text-decoration: none;
+    font-size: 20px;
+    color: #e3a857;
+}
+
+.kontejner {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    margin-bottom: 20px;
+    gap: 50px;
+}
+
+.kontakt-forma {
+    background: #1a1a1a;
+    padding: 30px;
+    margin-top: 40px;
+    border-radius: 15px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.25);
+}
+
+.form-grupa {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-grupa label {
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.kontakt-forma input,
+.kontakt-forma select,
+.kontakt-forma textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background: #0f0f0f;
+    color: #ddd;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.kontakt-forma input:focus,
+.kontakt-forma select:focus,
+.kontakt-forma textarea:focus {
+    outline: none;
+    border-color: #4f3b78;
+    background: #141014;
+}
+
+
+.dugme-submit {
+    width: 100%;
+    padding: 15px;
+    background: #4f3b78;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.dugme-submit:hover {
+    background: #6b52a3;
+}
+
+.dugme-submit:active {
+    transform: scale(0.98);
+}
