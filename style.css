@@ -267,3 +267,30 @@ footer a {
 .dugme-submit:active {
     transform: scale(0.98);
 }
+
+@media (max-width: 770px) {
+    .kontejner {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .tekst img {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+    iframe {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    .navigacija {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .tekst p {
+        font-size: 16px;
+    }
+}
